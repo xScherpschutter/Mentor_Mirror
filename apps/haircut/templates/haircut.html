@@ -1,17 +1,6 @@
-{% extends "components/base.html" %}
+{% extends "components/imgCapture.html" %}
 {% load static %}
 
-{% block content %}
-<section id="modules" class="services">
-    <div class="container" data-aos="fade-up">
-  
-      <div class="section-title">
-        <h2>Recomendación de corte de cabello</h2>
-       </div>
-       
-     {% comment "Aqui debe ir la captura del rostro" %}{% endcomment %}
-
-</div>
-  </section>
-
-{% endblock content %}
+{% block script_js %}
+<script src={% static 'assets/js/haircutWebcam.js' %}></script> 
+{% endblock script_js %}

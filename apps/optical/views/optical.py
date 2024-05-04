@@ -36,5 +36,7 @@ class OpticalView(View):
     #         return JsonResponse({'success': False, 'message': str(e)})
            
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, context = {})
+        return render(request, self.template_name, context = {
+            "module_name": "Recomendación óptica"
+        })
     
