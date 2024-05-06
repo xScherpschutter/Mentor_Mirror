@@ -128,9 +128,9 @@
         {% endif %}
 
         {% if request.path == '/haircut/'  %}
-        <li><a href={% url "haircut:index" %} class="nav-link scrollto active"><i class="bi bi-scissors"></i> <span>Módulo de cortes</span></a></li>
+        <li><a href={% url "haircut:index" %} class="nav-link scrollto active"><i class="bi bi-scissors"></i> <span>Módulo de peinados</span></a></li>
         {% else %}
-        <li><a href={% url "haircut:index" %} class="nav-link scrollto"><i class="bi bi-scissors"></i> <span>Módulo de cortes</span></a></li>
+        <li><a href={% url "haircut:index" %} class="nav-link scrollto"><i class="bi bi-scissors"></i> <span>Módulo de peinados</span></a></li>
         {% endif %}
 
         {% if not user.is_authenticated and request.path == '/login/'%}

@@ -66,8 +66,8 @@
 }
 
 #modalImage {
-  width: 50%%;
-  height: 50%%;
+  max-width: 100%; 
+  height: auto; 
   margin-bottom: 20px;
 }
 </style>
@@ -80,12 +80,12 @@
       </div>
        
     <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Capturar imagen</button>
+    <button id="snap" onclick=openInput()>Capturar imagen</button>
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     <form id="captureForm" method="POST" action="#">
     {% csrf_token %}
     <input type="hidden" name="imageData" id="imageData">
-    <input type="button" value="Enviar Captura" id="sendCapture" style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;">
+    <input type="button" value="Enviar Captura" id="sendCapture" onclick=closeInput() style="display: none; background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;">
     </form>
 </div>
 </section>
@@ -96,7 +96,7 @@
     <div class="container center-container" data-aos="fade-up">
       <img id="modalImage" src="" alt="Imagen" >
       <div id="modalTitle" class="section-title">
-        <h2></h2>
+        <h5></h5>
       </div>
     </div>
   </div>
@@ -106,10 +106,9 @@
 
   function openModal(imageUrl, face_type) {
       var modal = document.getElementById("modalDisplay");
-      var title = document.getElementById("modalTitle").querySelector("h2")
-
+      var title = document.getElementById("modalTitle").querySelector("h5")
       modal.style.display = "block";
-      
+
       var modalImg = document.getElementById("modalImage");
       modalImg.src = imageUrl;
       title.innerHTML = "Tipo de rostro: " + face_type
@@ -120,6 +119,18 @@
       var modal = document.getElementById("modalDisplay");
       modal.style.display = "none";
   }
+
+  function openInput() {
+    var sendCapture = document.getElementById('sendCapture');
+    sendCapture.style.display = 'block'
+}
+
+function closeInput() {
+    var sendCapture = document.getElementById('sendCapture');
+    sendCapture.style.display = 'none'
+}
 </script> 
+
+
 
 {% endblock content %}

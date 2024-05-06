@@ -16,11 +16,13 @@ window.addEventListener("DOMContentLoaded", function () {
 
     snap.addEventListener("click", function() {
         context.drawImage(video, 0, 0, 640, 480);
+        sendCapture.style.display = "block";
     });
 
     sendCapture.addEventListener("click", function() {
         var imageData = canvas.toDataURL('image/png');
         sendImage(imageData);
+        sendCapture.style.display = 'none'
     });
 });
 
@@ -74,3 +76,4 @@ function showModal(imageData, face_type) {
         alert("Error en la decodificación de la imagen")
     }
 }
+
