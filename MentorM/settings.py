@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'apps.core',
     'apps.security',
+    'apps.face_features',
     'apps.optical',
     'apps.haircut'
 ]
