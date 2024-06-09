@@ -2,75 +2,6 @@
 {% load static %}
 
 {% block content %}
-<style>
-  .center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 20px;
-  }
-  #video, #canvas {
-    margin: 10px auto;
-    display: block;
-    border: 1px solid #ddd;
-  }
-  button {
-    background-color: #448BDF ; 
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin: 5px; 
-  }
-  button:hover {
-    background-color: #448BDF;
-  }
-
-  .modal {
-    display: none; 
-    position: fixed;
-    z-index: 1;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.9);
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#modalImage {
-  max-width: 100%; 
-  height: auto; 
-  margin-bottom: 20px;
-}
-</style>
 
 <section id="modules" class="services">
     <div class="container center-container" data-aos="fade-up">
@@ -98,39 +29,18 @@
       <div id="modalTitle" class="section-title">
         <h5></h5>
       </div>
+      <div id="dataContainer"></div>
     </div>
   </div>
 </div>
 
-<script>
+<div id="successModal" class="modal small-modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSuccessModal()">&times;</span>
+    <p id="successMessage"></p>
+  </div>
+</div>
 
-  function openModal(imageUrl, face_type) {
-      var modal = document.getElementById("modalDisplay");
-      var title = document.getElementById("modalTitle").querySelector("h5")
-      modal.style.display = "block";
-
-      var modalImg = document.getElementById("modalImage");
-      modalImg.src = imageUrl;
-      title.innerHTML = "Tipo de rostro: " + face_type
-  }
-  
-
-  function closeModal() {
-      var modal = document.getElementById("modalDisplay");
-      modal.style.display = "none";
-  }
-
-  function openInput() {
-    var sendCapture = document.getElementById('sendCapture');
-    sendCapture.style.display = 'block'
-}
-
-function closeInput() {
-    var sendCapture = document.getElementById('sendCapture');
-    sendCapture.style.display = 'none'
-}
-</script> 
-
-
+<script src={% static 'assets/js/imgCapture.js' %}></script> 
 
 {% endblock content %}

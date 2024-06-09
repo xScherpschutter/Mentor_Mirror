@@ -11,5 +11,4 @@ urlpatterns = [
     path('optical/', include('apps.optical.urls', namespace="optical")),
     path('haircut/', include('apps.haircut.urls', namespace='haircut')),
     path('face_features/', include('apps.face_features.urls', namespace = 'face_features'))
-    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

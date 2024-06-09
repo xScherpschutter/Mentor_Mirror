@@ -83,6 +83,7 @@
   <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  
 
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
@@ -174,7 +175,7 @@
     }
   </style>
 
-  <footer id="footer">
+  {% comment %} <footer id="footer">
     <div class="container">
       <div>Copyright <strong>MentorMirror</strong>. Todos los derechos reservados</div>
     </div>
@@ -191,7 +192,7 @@
         footer.style.display = "none";
       }
     }
-  </script>
+  </script> {% endcomment %}
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -219,5 +220,6 @@
   {%block script_js%}
 
   {%endblock script_js%}
+
 </body>
 </html>
