@@ -8,13 +8,15 @@ import json
 from django.shortcuts import get_object_or_404
 from apps.haircut.models import UserHaircuts, Haircuts as HaircutsModel
 from apps.haircut.components.get_haircuts import get_haircuts
-class HaircutModulesView(View):
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class HaircutModulesView(LoginRequiredMixin, View):
     template_name = 'haircut_modules.html'
     
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, context = {})
 
-class HaircutView(View):
+class HaircutView(LoginRequiredMixin, View):
     template_name = 'haircut.html'
     
     def get(self, request, *args, **kwargs):
@@ -55,9 +57,7 @@ class SaveHaircuts(View):
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
-            print(data)
             token = data.get('token', None)
-            
             user = request.user
             
             if token is None: return JsonResponse ({'success': False}, status=400)

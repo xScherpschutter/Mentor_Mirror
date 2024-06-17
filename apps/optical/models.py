@@ -29,8 +29,8 @@ class Glasses(models.Model):
     
 class UserGlasses(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE)
-    glass = models.ForeignKey(Glasses, on_delete=models.CASCADE)
-    date = models.DateField(verbose_name='Fechas de adquisición', name = 'Fecha de adquisición', auto_now_add = True)
+    glass = models.ForeignKey(Glasses, on_delete= models.CASCADE)
+    date = models.DateField(auto_now_add = True)
     
     def __str__(self):
         return f'{self.user.username} -  {self.glass.Lente}'

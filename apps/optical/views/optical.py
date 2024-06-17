@@ -6,14 +6,15 @@ import json
 from apps.optical.components.get_glasses import get_glasses
 from apps.optical.models import UserGlasses, Glasses
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class OpticalModulesView(View):
+class OpticalModulesView(LoginRequiredMixin, View):
     template_name = 'optical_modules.html'
     
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, context = {})
 
-class OpticalView(View):
+class OpticalView( LoginRequiredMixin, View):
     template_name = 'optical.html'
     
     def get(self, request, *args, **kwargs):

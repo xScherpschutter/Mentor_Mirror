@@ -1,0 +1,109 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<style>
+    .table img {
+        max-width: 50px; 
+        max-height: 50px; 
+        display: block;
+        margin: 0 auto;
+    }
+</style>   
+
+<section id="portfolio" class="portfolio section-bg">
+    <div class="section-title">
+        <h2>{{title}}</h2>
+      </div>
+      
+        
+      <form action="" style="max-width: 450px;">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Busqueda por filtro" name="query" value="{{ request.GET.query }}">
+            <button class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-title="Busqueda por filtro">
+                Buscar
+            </button>
+        </div>
+    </form>
+
+    <br>
+
+    <table class="table table-bordered border-primary" colspan="6">
+
+        <thead>
+            <tr>
+              <th scope="col">Imagén</th>
+              <th scope="col">Lente</th>
+              <th scope="col">Fecha de adquisición</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for glass in glasses %}
+            <tr>
+                <td><img src='{{glass.glass.Imagen.url}}'></td>
+                <td>{{glass.glass.Lente}}</td>
+                <td>{{glass.date}}</td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="3">Sin datos</td>
+            </tr>
+
+            {% endfor %}
+
+          </tbody>
+
+    </table>
+
+<div class="container center">
+    {% if page_obj.paginator.num_pages > 1 %}
+    <ul class="pagination">
+      <li class="page-item">
+
+      <a class="page-link text-primary fw-bold" href="?page=1">&laquo;</a>
+      
+      </li>
+        {% for page_num in page_obj.paginator.page_range %}
+            <li class="list-group-item {% if page_num ==  page_obj.number %}active{% endif %} ">
+                <a class="page-link text-dark fw-bold" href="{% url 'optical:optical_list' %}?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+        {% endfor %}
+
+        <li class="page-item">
+            <a class="page-link text-primary fw-bold" href="{% url '' %}?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+        </li>
+    </ul>
+  {% endif %}
+  </div>
+
+
+  <div class="modal fade" id="costumerDetailsModal" tabindex="-1" aria-labelledby="costumerDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="costumerDetailsModalLabel">Detalles del Cliente</h5>
+          </div>
+          <div class="modal-body">
+
+             <p id="firstName"></p>
+             <p id="lastName"></p>
+             <p id="id_number"></p>
+
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+       </div>
+    </div>
+ </div>
+
+</section>
+
+
+{% endblock content %}
+    

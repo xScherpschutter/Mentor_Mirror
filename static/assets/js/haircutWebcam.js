@@ -143,32 +143,28 @@ function openModal(imageUrl, face_type, data) {
         dataImg.style.width = "100px";
         dataImg.style.height = "auto";
         dataImg.style.margin = "10px";
-    
-        // Crear el elemento de nombre
+
         var dataName = document.createElement("p");
         dataName.innerText = element.name;
         dataName.style.textAlign = "center";
-    
-        // Crear un botón
+
         var button = document.createElement("button");
         button.innerText = "Seleccionar";
         button.style.marginTop = "5px";
-        button.dataset.token = element.token;  // Usar un token en lugar de un ID directo
+        button.dataset.token = element.token; 
         button.onclick = function() {
             sendHaircut(element.token);
         };
     
-        // Crear un contenedor para cada lente
         var dataItem = document.createElement("div");
         dataItem.style.display = "inline-block";
         dataItem.style.textAlign = "center";
     
-        // Añadir la imagen, el nombre y el botón al contenedor del lente
+       
         dataItem.appendChild(dataImg);
         dataItem.appendChild(dataName);
         dataItem.appendChild(button);
     
-        // Añadir el contenedor del lente al contenedor principal
         dataContainer.appendChild(dataItem);
     });
 
@@ -188,8 +184,11 @@ function openModal(imageUrl, face_type, data) {
             body: JSON.stringify({ token: token })
         });
 
+        if (!response.ok) {
+            throw new Error(`Async error: ${response.status}`);
+        }
+
         const data = await response.json();
-        console.log('Success:', data);
 
         closeModal()
         showSuccessModal(data.success)

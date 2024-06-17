@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from apps.core.mixins import UserGroupMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ModulesTemplateView(UserGroupMixin, TemplateView):
+class ModulesTemplateView(UserGroupMixin, LoginRequiredMixin, TemplateView):
     template_name = 'index/modules.html'
