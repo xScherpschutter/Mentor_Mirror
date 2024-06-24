@@ -1,0 +1,49 @@
+{% extends "components/base.html" %}
+{% load static %}
+{% block content %}
+<section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+  
+      <div class="section-title">
+        <h2>MENTOR MIRROR</h2>
+        <p>Esta aplicación web va a facilitar la toma de decisiones para todas las personas 
+          que gusten del uso de un corte de cabello o del uso de lentes a su medida, la 
+          aplicación web cuenta con un reconocimiento facial que detecta las 
+          características del rostro de las personas y recomienda según el tipo de rostro 
+          cual es su mejor opción que puede tomar. </p>
+      </div>
+  
+      <div class="row">
+        <div class="col-lg-4">
+          <img src="{% static 'assets/img/dptoRRHHS.jpg' %}" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-8 pt-4 pt-lg-0 content">
+         
+          <div class="row">
+            
+            <div class="col-lg-6">
+              <h3>Valores</h3>
+              <ul>
+                <li><i class="bi bi-chevron-right"></i> <strong>Integridad: </strong> <span>Actuar con honestidad y ética en todas las interacciones laborales y decisiones.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Respeto:</strong> <span> Fomentar un ambiente de trabajo donde se valore la diversidad y se respeten las opiniones y contribuciones de cada individuo.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Equidad:</strong> <span> Tratar a todos los empleados con imparcialidad y justicia, asegurando oportunidades iguales para el desarrollo y reconocimiento.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Colaboración:</strong> <span> Promover la colaboración y el trabajo en equipo para alcanzar objetivos organizacionales y mejorar la eficiencia.</span></li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <h3>Principios</h3>
+              <ul>
+                <li><i class="bi bi-chevron-right"></i> <strong>Desarrollo Profesional:</strong> <span> Facilitar oportunidades de aprendizaje y desarrollo para que los empleados alcancen su máximo potencial.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Equilibrio Personal: </strong> <span>Reconocer y apoyar la importancia de un equilibrio saludable entre el trabajo y la vida personal.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Adaptabilidad:</strong> <span> Ser flexible y capaz de adaptarse a los cambios en el entorno laboral y las necesidades del personal.</span></li>
+                <li><i class="bi bi-chevron-right"></i> <strong>Empoderamiento: </strong> <span>Capacitar a los empleados para que tomen decisiones informadas y asuman responsabilidades, fomentando un sentido de empoderamiento.</span></li>
+              </ul>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+  
+    </div>
+  </section>
+{% endblock content %}
