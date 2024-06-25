@@ -159,8 +159,8 @@ function openModal(imageUrl, face_type, data) {
         var dataItem = document.createElement("div");
         dataItem.style.display = "inline-block";
         dataItem.style.textAlign = "center";
+        dataItem.style.margin = "20px";
     
-       
         dataItem.appendChild(dataImg);
         dataItem.appendChild(dataName);
         dataItem.appendChild(button);

@@ -180,6 +180,7 @@ function openModal(imageUrl, face_type, data) {
         var dataItem = document.createElement("div");
         dataItem.style.display = "inline-block";
         dataItem.style.textAlign = "center";
+        dataItem.style.margin = "20px";
     
         // Añadir la imagen, el nombre y el botón al contenedor del lente
         dataItem.appendChild(dataImg);
