@@ -75,7 +75,7 @@
         {% endfor %}
 
         <li class="page-item">
-            <a class="page-link text-primary fw-bold" href="{% url '' %}?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+            <a class="page-link text-primary fw-bold" href="{% url 'haircut:haircut_list' %}?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
         </li>
     </ul>
   {% endif %}
