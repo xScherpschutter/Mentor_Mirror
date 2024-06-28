@@ -6,8 +6,8 @@
 
 <style>
     .table img {
-        max-width: 50px; 
-        max-height: 50px; 
+        max-width: 200px; 
+        max-height: 200px; 
         display: block;
         margin: 0 auto;
     }
@@ -43,7 +43,7 @@
           <tbody>
             {% for glass in glasses %}
             <tr>
-                <td><img src='{{glass.glass.Imagen.url}}' style="width: 800px; height: 800px"></td>
+                <td><img src='{{glass.glass.Imagen.url}}'></td>
                 <td>{{glass.glass.Lente}}</td>
                 <td>{{glass.date}}</td>
             </tr>

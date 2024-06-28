@@ -27,6 +27,8 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendImage(imageData) {
+    showLoadingModal()
+    
     fetch('/face_features/optical/', {  
         method: 'POST',
         headers: {
@@ -39,12 +41,16 @@ function sendImage(imageData) {
     })
     .then(response => response.json())
     .then(data => {
+        hideLoadingModal()
+
         const img = data.image
         const face_type = data.message
         console.log('sendImage:', face_type)
         showModal(img, face_type) 
     })
     .catch((error) => {
+
+        hideLoadingModal()
         console.error('Error:', error);
     });
 }

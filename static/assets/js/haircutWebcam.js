@@ -27,6 +27,9 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendImage(imageData) {
+    
+    showLoadingModal()
+
     fetch('/face_features/haircut/', {  
         method: 'POST',
         headers: {
@@ -40,6 +43,7 @@ function sendImage(imageData) {
     .then(response => response.json())
     .then(data => {
 
+        hideLoadingModal()
         if (!data.success) { alert("Error al recibir la imagén del servidor"); return}
 
         face_shape = data.data[0].face_type
@@ -51,6 +55,8 @@ function sendImage(imageData) {
 
     })
     .catch((error) => {
+        
+        hideLoadingModal()
         console.error('Error:', error);
     });
 }

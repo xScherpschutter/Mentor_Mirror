@@ -6,8 +6,8 @@
 
 <style>
     .table img {
-        max-width: 50px; 
-        max-height: 50px; 
+        max-width: 200px; 
+        max-height: 200px; 
         display: block;
         margin: 0 auto;
     }
@@ -43,7 +43,7 @@
           <tbody>
             {% for haircut in haircuts %}
             <tr>
-                <td><img src='{{haircut.haircut.Imagen.url}}' style="width: 800px; height: 800px"></td>
+                <td><img src='{{haircut.haircut.Imagen.url}}'></td>
                 <td>{{haircut.haircut.Corte}}</td>
                 <td>{{haircut.date}}</td>
             </tr>
