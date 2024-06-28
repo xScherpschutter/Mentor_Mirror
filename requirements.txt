@@ -1,4 +1,4 @@
-bsl-py==2.1.0
+absl-py==2.1.0
 asgiref==3.8.1
 astunparse==1.6.3
 backports.zoneinfo==0.2.1
@@ -9,8 +9,10 @@ certifi==2024.6.2
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
+crispy-bootstrap5==2024.2
 deepface==0.0.92
 Django==4.2.13
+django-crispy-forms==2.2
 dlib==19.24.4
 face-recognition==1.3.0
 face-recognition-models==0.3.0
