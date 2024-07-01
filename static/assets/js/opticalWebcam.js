@@ -70,7 +70,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Próximamente se deberá editar esta función junto con openModal para iterar los datos en JSON
 async function showModal(imageData, face_type) {
     try {
         const decodedImage = atob(imageData);
@@ -168,32 +167,27 @@ function openModal(imageUrl, face_type, data) {
         dataImg.style.height = "auto";
         dataImg.style.margin = "10px";
     
-        // Crear el elemento de nombre
         var dataName = document.createElement("p");
         dataName.innerText = element.name;
         dataName.style.textAlign = "center";
-    
-        // Crear un botón
+
         var button = document.createElement("button");
         button.innerText = "Seleccionar";
         button.style.marginTop = "5px";
-        button.dataset.token = element.token;  // Usar un token en lugar de un ID directo
+        button.dataset.token = element.token;  
         button.onclick = function() {
             sendGlass(element.token);
         };
     
-        // Crear un contenedor para cada lente
         var dataItem = document.createElement("div");
         dataItem.style.display = "inline-block";
         dataItem.style.textAlign = "center";
         dataItem.style.margin = "20px";
     
-        // Añadir la imagen, el nombre y el botón al contenedor del lente
         dataItem.appendChild(dataImg);
         dataItem.appendChild(dataName);
         dataItem.appendChild(button);
     
-        // Añadir el contenedor del lente al contenedor principal
         dataContainer.appendChild(dataItem);
     });
 

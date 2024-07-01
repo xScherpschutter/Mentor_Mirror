@@ -76,7 +76,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Próximamente se deberá editar esta función junto con openModal para iterar los datos en JSON
 async function showModal(imageData, face_type, race, gender) {
     try {
         const decodedImage = atob(imageData);
