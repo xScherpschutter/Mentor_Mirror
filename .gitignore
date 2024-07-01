@@ -12,6 +12,10 @@ faces/
 # C extensions
 *.so
 
+
+#sqlite
+db.sqlite3
+
 # Distribution / packaging
 .Python
 build/
