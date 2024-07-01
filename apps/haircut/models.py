@@ -32,7 +32,7 @@ class Haircuts(models.Model):
 class UserHaircuts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     haircut = models.ForeignKey(Haircuts, on_delete=models.CASCADE)
-    date = models.DateField(verbose_name='Fechas de realización', name = 'Fecha de realización', auto_now_add = True)
+    date = models.DateField(auto_now_add = True)
     
     def __str__(self):
         return f'{self.user.username} -  {self.haircut.Corte}'
