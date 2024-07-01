@@ -3,8 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-#Data paths
-
+#Data path
+.apps/face_features/base/faces/
+.faces/
+apps/face_features/base/faces/
+faces/
 
 # C extensions
 *.so

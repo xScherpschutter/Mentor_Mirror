@@ -44,7 +44,7 @@ function sendImage(imageData) {
     .then(data => {
 
         hideLoadingModal()
-        if (!data.success) { alert("Error al recibir la imagén del servidor"); return}
+        if (!data.success) { showErrorModal(); return}
 
         face_shape = data.data[0].face_type
         race = data.data[0].race

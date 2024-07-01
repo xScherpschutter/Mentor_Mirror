@@ -151,7 +151,7 @@ function openModal(imageUrl, face_type, data) {
       modalImg.src = imageUrl;
       var dataContainer = document.getElementById("dataContainer");
       dataContainer.innerHTML = '';
-      title.innerHTML = "Tipo de rostro: " + face_type
+      title.innerHTML = "Resultados: " + face_type
 
       if (data.data == null ) {
         console.log('No hay datos dentro de data')

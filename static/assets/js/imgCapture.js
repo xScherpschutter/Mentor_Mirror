@@ -20,6 +20,8 @@ var successMessage = document.getElementById('successMessage');
 if (!condition)  {
   successMessage.innerText = 'Error!';
   successImage.src = '/static/assets/img/error.gif';
+  successModal.style.display = 'block';
+  return
 
 }  
 
@@ -81,3 +83,13 @@ function hideLoadingModal() {
       modal.remove();
   }
 }
+
+function showErrorModal() {
+  var successModal = document.getElementById('successModal');
+  var successMessage = document.getElementById('successMessage');
+  
+  successMessage.innerText = 'Error en el procesamiento, intente nuevamente';
+  successImage.src = '/static/assets/img/error.gif';
+  successModal.style.display = 'block';
+
+  }
