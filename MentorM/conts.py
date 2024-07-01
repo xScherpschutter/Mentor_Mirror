@@ -3,7 +3,7 @@ FACE_SHAPE_CHOICES = [
         ('cuadrado', 'Cuadrado'),
         ('redondo', 'Redondo'),
         ('corazon', 'Corazón'),
-        ('diamante', 'Diamante'),
+        ('oblongo', 'Oblongo')
     ]
 
 RACE_CHOICES = [

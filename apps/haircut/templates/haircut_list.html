@@ -6,8 +6,8 @@
 
 <style>
     .table img {
-        max-width: 50px; 
-        max-height: 50px; 
+        max-width: 200px; 
+        max-height: 200px; 
         display: block;
         margin: 0 auto;
     }
@@ -75,7 +75,7 @@
         {% endfor %}
 
         <li class="page-item">
-            <a class="page-link text-primary fw-bold" href="{% url '' %}?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+            <a class="page-link text-primary fw-bold" href="{% url 'haircut:haircut_list' %}?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
         </li>
     </ul>
   {% endif %}

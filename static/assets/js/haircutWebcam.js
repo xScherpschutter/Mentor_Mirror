@@ -27,6 +27,9 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendImage(imageData) {
+    
+    showLoadingModal()
+
     fetch('/face_features/haircut/', {  
         method: 'POST',
         headers: {
@@ -40,7 +43,8 @@ function sendImage(imageData) {
     .then(response => response.json())
     .then(data => {
 
-        if (!data.success) { alert("Error al recibir la imagén del servidor"); return}
+        hideLoadingModal()
+        if (!data.success) { showErrorModal(); return}
 
         face_shape = data.data[0].face_type
         race = data.data[0].race
@@ -51,6 +55,8 @@ function sendImage(imageData) {
 
     })
     .catch((error) => {
+        
+        hideLoadingModal()
         console.error('Error:', error);
     });
 }
@@ -70,7 +76,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Próximamente se deberá editar esta función junto con openModal para iterar los datos en JSON
 async function showModal(imageData, face_type, race, gender) {
     try {
         const decodedImage = atob(imageData);
@@ -159,8 +164,8 @@ function openModal(imageUrl, face_type, data) {
         var dataItem = document.createElement("div");
         dataItem.style.display = "inline-block";
         dataItem.style.textAlign = "center";
+        dataItem.style.margin = "20px";
     
-       
         dataItem.appendChild(dataImg);
         dataItem.appendChild(dataName);
         dataItem.appendChild(button);

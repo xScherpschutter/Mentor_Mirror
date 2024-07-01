@@ -1,7 +1,16 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+__pychache__
 *.py[cod]
 *$py.class
+
+.env
+
+#Data path
+.apps/face_features/base/faces/
+.faces/
+apps/face_features/base/faces/
+faces/
 
 # C extensions
 *.so
@@ -54,6 +63,9 @@ cover/
 # Translations
 *.mo
 *.pot
+
+# staticfiles
+staticfiles/
 
 # Django stuff:
 *.log
@@ -151,6 +163,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#sqlite
+db.sqlite3
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

@@ -5,10 +5,9 @@ import os
 import base64
 from deepface import DeepFace
 
-
 def optical_face_features(image):
     try:
-        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'face_features.pkl'))
+        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'base', 'face_features.pkl'))
         image = cv2.imread(image)
 
         if image is None:
@@ -64,7 +63,7 @@ def optical_face_features(image):
 def haircut_face_features(image):
     try: 
         image_copy = image
-        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'face_features.pkl'))
+        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'base', 'face_features.pkl'))
         
         if image is None:
             return "La imagén no se ha cargado correctamente", False, None
