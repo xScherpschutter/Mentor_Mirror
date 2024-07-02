@@ -6,9 +6,11 @@ aptPackages = [
   "libffi-dev",
   "zlib1g-dev",
   "gcc",
-  "g++"
+  "g++",
+  "libc6-dev"
 ]
 
 [packages]
 cmake = { version = "3.21.1" }
 gxx = { version = "9" }
+glibc = { version = "2.36" }
