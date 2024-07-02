@@ -132,7 +132,12 @@ function openModal(imageUrl, face_type, data) {
       modalImg.src = imageUrl;
       var dataContainer = document.getElementById("dataContainer");
       dataContainer.innerHTML = '';
-      title.innerHTML = "Resultados: " + face_type
+
+      if (face_type) {
+        title.innerHTML = "Resultados: " + face_type
+        } else {
+        title.innerHTML = "Resultados: Se ha detectado màs de un rostro o ninguno!" 
+        }
 
       if (data.data == null ) {
         console.log('No hay datos dentro de data')
