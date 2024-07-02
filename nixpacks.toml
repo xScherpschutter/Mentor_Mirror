@@ -13,14 +13,3 @@ nixPkgs = [
   "libpng",
   "glibc"
 ]
-
-[phases.build]
-commands = [
-  "pip install --upgrade pip",
-  "pip install --upgrade setuptools",
-  "pip install --upgrade wheel",
-  "cmake --version",
-  "gcc --version",
-  "g++ --version",
-  "pip install dlib --use-pep517"
-]
