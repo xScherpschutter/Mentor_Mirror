@@ -1,19 +1,18 @@
 [phases.setup]
-aptPackages = [
-  "build-essential",
+nixPkgs = [
+  "python38",
+  "python38Packages.pip",
+  "python38Packages.setuptools",
+  "python38Packages.wheel",
   "cmake",
-  "libssl-dev",
-  "libffi-dev",
-  "zlib1g-dev",
   "gcc",
-  "g++",
-  "libc6-dev"
+  "gcc11",
+  "libffi",
+  "zlib",
+  "libjpeg",
+  "libpng",
+  "glibc"
 ]
-
-[packages]
-wheel = { version = "latest" }
-cmake = { version = "3.21.1" }
-gxx = { version = "9" }
 
 [phases.build]
 commands = [
