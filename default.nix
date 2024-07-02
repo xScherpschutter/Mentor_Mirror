@@ -15,8 +15,19 @@ pkgs.mkShell {
     libpng
     glibc
     python38Packages.cffi
-    python38Packages.python38-openssl
+    python38Packages.python38-openssl 
     python38Packages.python38-dev
-    libX11.dev
+    libopenblas
+    ffmpeg
+    libavdevice
+    libavfilter
+    libavformat
+    libavcodec
+    libswresample
+    libswscale
+    libavutil
+    cuda
+    cudatoolkit
+    cudnn
   ];
 }
