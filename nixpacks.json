@@ -1,0 +1,12 @@
+{
+    "packages": [
+      {
+        "name": "cmake",
+        "version": "3.21.1"  
+      },
+      {
+        "name": "g++",
+        "version": "9"  
+      }
+    ]
+  }
