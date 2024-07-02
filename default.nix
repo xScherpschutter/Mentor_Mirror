@@ -13,6 +13,7 @@ pkgs.mkShell {
     pkgs.libjpeg
     pkgs.libpng
     pkgs.glibc
+    pkgs.libraries.libcrypt.dev 
   ];
 
   shellHook = ''
