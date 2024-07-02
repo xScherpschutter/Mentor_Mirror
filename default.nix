@@ -15,7 +15,8 @@ pkgs.mkShell {
     libpng
     glibc
     python38Packages.cffi
-    python38Packages.python38-openssl 
-    python38Packages.python38-dev  
+    python38Packages.python38-openssl
+    python38Packages.python38-dev
+    libX11.dev
   ];
 }
