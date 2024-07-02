@@ -28,6 +28,10 @@ WORKDIR /app
 
 COPY . /app
 
+COPY dependencies/dlib-19.22.99-cp38-cp38-win_amd64.whl /tmp/dlib-19.22.99-cp38-cp38-win_amd64.whl
+
+RUN pip install /tmp/dlib-19.22.99-cp38-cp38-win_amd64.whl
+
 RUN pip install --upgrade pip setuptools wheel
 
 RUN apt-get install -y \
