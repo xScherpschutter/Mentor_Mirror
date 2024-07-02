@@ -1,23 +1,21 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  buildInputs = [
-    pkgs.python38
-    pkgs.python38Packages.pip
-    pkgs.python38Packages.setuptools
-    pkgs.python38Packages.wheel
-    pkgs.cmake
-    pkgs.gcc11  # Especifica una sola versión de gcc (en este caso gcc11)
-    pkgs.libffi
-    pkgs.zlib
-    pkgs.libjpeg
-    pkgs.libpng
-    pkgs.glibc
-    pkgs.libraries.libcrypt.dev 
+  buildInputs = with pkgs; [
+    python38
+    python38Packages.pip
+    python38Packages.setuptools
+    python38Packages.wheel
+    cmake
+    gcc
+    gcc11
+    libffi
+    zlib
+    libjpeg
+    libpng
+    glibc
+    python38Packages.cffi
+    python38Packages.python38-openssl 
+    python38Packages.python38-dev  
   ];
-
-  shellHook = ''
-    export CC=gcc
-    export CXX=g++
-  '';
 }
