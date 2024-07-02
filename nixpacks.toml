@@ -11,6 +11,17 @@ aptPackages = [
 ]
 
 [packages]
+wheel = { version = "latest" }
 cmake = { version = "3.21.1" }
 gxx = { version = "9" }
-glibc = { version = "2.36" }
+
+[phases.build]
+commands = [
+  "pip install --upgrade pip",
+  "pip install --upgrade setuptools",
+  "pip install --upgrade wheel",
+  "cmake --version",
+  "gcc --version",
+  "g++ --version",
+  "pip install dlib --use-pep517"
+]
