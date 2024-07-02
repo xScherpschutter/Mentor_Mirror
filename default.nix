@@ -7,8 +7,7 @@ pkgs.mkShell {
     pkgs.python38Packages.setuptools
     pkgs.python38Packages.wheel
     pkgs.cmake
-    pkgs.gcc
-    pkgs.gcc11
+    pkgs.gcc11  # Especifica una sola versión de gcc (en este caso gcc11)
     pkgs.libffi
     pkgs.zlib
     pkgs.libjpeg

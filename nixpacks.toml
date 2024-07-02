@@ -5,7 +5,6 @@ nixPkgs = [
   "python38Packages.setuptools",
   "python38Packages.wheel",
   "cmake",
-  "gcc",
   "gcc11",
   "libffi",
   "zlib",
