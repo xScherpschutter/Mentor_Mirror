@@ -29,5 +29,13 @@ WORKDIR /app
 COPY . /app
 
 RUN pip install --upgrade pip setuptools wheel
+
+RUN apt-get install -y \
+        python3.8 \
+        python3.8-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install cffi python-openssl
+
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
