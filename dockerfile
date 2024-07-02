@@ -1,4 +1,8 @@
-FROM railway/python38:3.8.10
+FROM python:3.8-slim
+
+RUN apt-get update && \
+    apt-get install -y build-essential libssl-dev && \
+    apt-get clean
 
 RUN apt-get update && \
     apt-get install -y \
@@ -27,10 +31,6 @@ RUN apt-get update && \
 WORKDIR /app
 
 COPY . /app
-
-COPY dependencies/dlib-19.22.99-cp38-cp38-win_amd64.whl /tmp/dlib-19.22.99-cp38-cp38-win_amd64.whl
-
-RUN pip install /tmp/dlib-19.22.99-cp38-cp38-win_amd64.whl
 
 RUN pip install --upgrade pip setuptools wheel
 
