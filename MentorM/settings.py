@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-2dhzfw$i(npby71c9cd-21f#zw+evyj!di82$5bsi^wn%z2l@9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mentormirror.up.railway.app', '127.0.0.1']
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -153,4 +153,4 @@ LOGIN_URL = '/login/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-# CSRF_TRUSTED_ORIGINS = ['http://*']
+CSRF_TRUSTED_ORIGINS = ['http://*', 'http://mentormirror.up.railway.app']
