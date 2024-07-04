@@ -140,7 +140,7 @@ USE_TZ = True
 
 AUTH_USER_MODEL = "security.User"
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)# carpeta fisica de archivos estaticos
