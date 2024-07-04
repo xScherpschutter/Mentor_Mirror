@@ -1,22 +1,14 @@
 import numpy as np
-from sklearn.svm import SVC
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import TensorDataset, DataLoader
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
 import os
-import joblib
 
-def create_or_update_model(data_npz, model_file):
-
-    if os.path.exists(model_file):
-        clf, classes = joblib.load(model_file)
-    else:
-        clf = SVC(kernel='linear', probability=True)
-        classes = None
-
-
-    data = np.load(data_npz)
-
-
+if __name__ == "__main__":
+    data = np.load(os.path.join(os.path.dirname(__file__), 'data_faces_combined.npz'))
     X = []
     y = []
 
@@ -25,39 +17,77 @@ def create_or_update_model(data_npz, model_file):
             X.append(feature)
             y.append(label)
 
-
     X = np.array(X)
     y = np.array(y)
 
+    # Convertir las etiquetas a números enteros únicos
+    label_encoder = LabelEncoder()
+    y_encoded = label_encoder.fit_transform(y)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Guardar el mapeo inverso para reconstruir las etiquetas originales
+    inverse_label_map = {i: label for i, label in enumerate(label_encoder.classes_)}
 
+    # Convertir a tensores de PyTorch
+    X_tensor = torch.tensor(X, dtype=torch.float32)
+    y_tensor = torch.tensor(y_encoded, dtype=torch.long)  # Ahora las etiquetas son números enteros
 
-    if classes is not None: 
-        if len(np.unique(y_train)) > 1:
-            clf.fit(X_train, y_train)  
-        else:
-            print("No hay suficientes clases.")
-    else:
-        if len(np.unique(y_train)) > 1:
-            clf.fit(X_train, y_train) 
-            print("Modelo creado.")
-        else:
-            print("No hay suficientes clases.")
+    # Dividir los datos en conjuntos de entrenamiento y prueba
+    X_train, X_test, y_train, y_test = train_test_split(X_tensor, y_tensor, test_size=0.2, random_state=42)
 
-    y_pred = clf.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f'Precisión del modelo: {accuracy * 100:.2f}%')
+    # Definir las dimensiones del modelo
+    input_dim = X.shape[1]  # Número de características de entrada
+    print('Numero de caracteristicas de entrada:', input_dim)
+    hidden_dim = 100  # Número de neuronas en la capa oculta
+    output_dim = len(np.unique(y))  # Número de clases de salida (número único de etiquetas)
+    print('Número de clases de salida:', output_dim)
 
-    joblib.dump((clf, np.unique(y_train)), model_file)
-    print("Modelo actualizado")
+    # Crear una instancia del modelo
+    model = nn.Sequential(
+        nn.Linear(input_dim, hidden_dim),
+        nn.ReLU(),
+        nn.Linear(hidden_dim, output_dim)
+    )
 
+    # Definir la función de pérdida y el optimizador
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+    # Configurar los datos para el DataLoader
+    train_dataset = TensorDataset(X_train, y_train)
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 
-base_dir = os.path.dirname(__file__)
+    # Entrenamiento del modelo
+    num_epochs = 50
 
-data_npz = os.path.join(base_dir, 'data_faces.npz')
-model_file = os.path.join(base_dir, 'face_features.pkl')
+    for epoch in range(num_epochs):
+        model.train()
+        running_loss = 0.0
+        for inputs, labels in train_loader:
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item() * inputs.size(0)
+        
+        epoch_loss = running_loss / len(train_loader.dataset)
+        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}')
 
+    # Evaluación del modelo con el conjunto de prueba
+    model.eval()
+    with torch.no_grad():
+        outputs = model(X_test)
+        _, predicted = torch.max(outputs, 1)
+        accuracy = torch.sum(predicted == y_test).item() / len(y_test)
+        print(f'Precisión del clasificador en el conjunto de prueba: {accuracy:.2f}')
 
-create_or_update_model(data_npz, model_file)
+    # Guardar el modelo entrenado
+    model_path = os.path.join(os.path.dirname(__file__), 'face_features_pytorch.pth')
+    torch.save(model.state_dict(), model_path)
+    print(f'Modelo guardado en: {model_path}')
+
+    # Guardar el mapeo inverso para reconstruir las etiquetas originales después
+    label_map_path = os.path.join(os.path.dirname(__file__), 'label_map.npy')
+    np.save(label_map_path, inverse_label_map)
+    print(f'Mapeo inverso guardado en: {label_map_path}')

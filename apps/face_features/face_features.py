@@ -1,139 +1,152 @@
 import cv2
-import face_recognition
-import joblib
-import os
+import torch
 import base64
+import numpy as np
+from facenet_pytorch import MTCNN, InceptionResnetV1
+from PIL import Image
 from deepface import DeepFace
+import os
+import torch.nn as nn
 
-def optical_face_features(image):
+# Inicializar MTCNN para la detección de caras
+mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20)
+
+# Inicializar InceptionResnetV1 para la obtención de codificaciones
+feature_extractor = InceptionResnetV1(pretrained='vggface2').eval()
+
+# Definir el mismo modelo utilizado para el entrenamiento
+input_dim = 512 # Este valor debe ser consistente con el entrenamiento
+hidden_dim = 100
+output_dim = 5  # Este valor debe coincidir con el número de clases en el entrenamiento
+
+# Crear una instancia del modelo usando nn.Sequential
+classifier = nn.Sequential(
+    nn.Linear(input_dim, hidden_dim),
+    nn.ReLU(),
+    nn.Linear(hidden_dim, output_dim)
+)
+
+model_path = os.path.join(os.path.dirname(__file__), 'base', 'face_features_pytorch.pth')
+label_map_path = os.path.join(os.path.dirname(__file__), 'base', 'label_map.npy')
+
+classifier.load_state_dict(torch.load(model_path))
+classifier.eval()
+
+label_map = np.load(label_map_path, allow_pickle=True).item()
+
+def optical_face_features(image_path):
     try:
-        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'base', 'face_features.pkl'))
-        image = cv2.imread(image)
-
+        image = cv2.imread(image_path)
+        
         if image is None:
-            return "La imagén no se ha cargado correctamente", False, None
+            return "La imagen no se ha cargado correctamente", False, None
+        # Convertir la imagen a PIL
+        pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        
+        # Detectar las caras en la imagen
+        face_locations, _ = mtcnn.detect(pil_image)
 
-        face_locations = face_recognition.face_locations(image)
-        face_landmarks_list = face_recognition.face_landmarks(image)
-
-        if len(face_locations) == 0:
+        if face_locations is None or len(face_locations) == 0:
             _, img_encoded = cv2.imencode('.png', image)
             img_base64 = base64.b64encode(img_encoded).decode('utf-8')
-        
             return "No se detectaron rostros en la imagen", False, img_base64
-        
+
         if len(face_locations) != 1:
-            face_encodings = face_recognition.face_encodings(image, face_locations)
-            
-            for face_encoding, face_location in zip(face_encodings, face_locations):
-                top, right, bottom, left = face_location
-                cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-                
             _, img_encoded = cv2.imencode('.png', image)
             img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            return "Solo debe haber un rostro en la imagen!", True, img_base64
 
-            return "Solo debe haber un rostro en la imagén!", True, img_base64
+        # Procesar el rostro detectado
+        face_tensor = mtcnn(pil_image)
         
-        face_encodings = face_recognition.face_encodings(image, face_locations)
-        for face_encoding, face_location in zip(face_encodings, face_locations):
-            
-            face_type = model.predict([face_encoding])[0]
-            face_type = face_type.split('-')[0]
-            
-            top, right, bottom, left = face_location
-            cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-            cv2.putText(image, f'Tipo de rostro: {face_type}', (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        if face_tensor is None:
+            _, img_encoded = cv2.imencode('.png', image)
+            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            return "No se pudo procesar la imagen correctamente", False, img_base64
+        
+        face_tensor = face_tensor.unsqueeze(0)
+        
+        with torch.no_grad():
+            face_encodings = feature_extractor(face_tensor).numpy()
 
+        # Convertir la predicción de vuelta a etiqueta de texto
+        face_encodings = torch.tensor(face_encodings, dtype=torch.float32)
+        predicted_label = classifier(face_encodings)
+        _, predicted_label_idx = torch.max(predicted_label, 1)
+        predicted_label = label_map[int(predicted_label_idx)]
 
-        if face_landmarks_list:
-            for face_landmarks in face_landmarks_list:
-                for facial_feature in face_landmarks.keys():
-                    points = face_landmarks[facial_feature]
-                    for point in points:
-                        cv2.circle(image, point, 1, (255, 0, 0), -1)
-
+        # Convertir la imagen a base64 para mostrarla en la interfaz web, etc.
         _, img_encoded = cv2.imencode('.png', image)
         img_base64 = base64.b64encode(img_encoded).decode('utf-8')
-        
-        return str(face_type), True , img_base64
-    
+
+        return str(predicted_label), True, img_base64
+
     except Exception as e:
-            return str(e), False, None
-     
-def haircut_face_features(image):
-    try: 
-        image_copy = image
-        model, label = joblib.load(os.path.join(os.path.dirname(__file__), 'base', 'face_features.pkl'))
-        
+        print('Error óptico:', e)
+        return str(e), False, None
+    
+    
+def haircut_face_features(image_path):
+    try:
+        image = cv2.imread(image_path)
         if image is None:
-            return "La imagén no se ha cargado correctamente", False, None
-        
-        image = cv2.imread(image)
-        
-        face_locations = face_recognition.face_locations(image)
-        face_landmarks_list = face_recognition.face_landmarks(image)
+            return "La imagen no se ha cargado correctamente", False, None
 
-        if len(face_locations) == 0:
+        pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        face_locations, _ = mtcnn.detect(pil_image)
+
+        if face_locations is None or len(face_locations) == 0:
             _, img_encoded = cv2.imencode('.png', image)
             img_base64 = base64.b64encode(img_encoded).decode('utf-8')
-        
             return "No se detectaron rostros en la imagen", False, img_base64
-        
+
         if len(face_locations) != 1:
-            face_encodings = face_recognition.face_encodings(image, face_locations)
-            
-            for face_encoding, face_location in zip(face_encodings, face_locations):
-                top, right, bottom, left = face_location
-                cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-                
             _, img_encoded = cv2.imencode('.png', image)
             img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            return "Solo debe haber un rostro en la imagen!", True, img_base64
 
-            return "Solo debe haber un rostro en la imagén!", True, img_base64
-                
-        face_encodings = face_recognition.face_encodings(image, face_locations)
-        for face_encoding, face_location in zip(face_encodings, face_locations):
-            
-            face_type = model.predict([face_encoding])[0]
-            face_type = face_type.split('-')[0]
-            
-            top, right, bottom, left = face_location
-            cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-            cv2.putText(image, f'Tipo de rostro: {face_type}', (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        face_tensor = mtcnn(pil_image)
 
+        if face_tensor is None:
+            _, img_encoded = cv2.imencode('.png', image)
+            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            return "No se detectaron rostros en la imagen", False, None
 
-        if face_landmarks_list:
-            for face_landmarks in face_landmarks_list:
-                for facial_feature in face_landmarks.keys():
-                    points = face_landmarks[facial_feature]
-                    for point in points:
-                        cv2.circle(image, point, 1, (255, 0, 0), -1)
-                        
-        results = DeepFace.analyze(img_path=image_copy, actions=['race', 'gender'])
+        face_tensor = face_tensor.unsqueeze(0)
         
+        with torch.no_grad():
+            face_encodings = feature_extractor(face_tensor).numpy()
+
+        face_encodings = torch.tensor(face_encodings, dtype=torch.float32)
+        predicted_label = classifier(face_encodings)
+        _, predicted_label_idx = torch.max(predicted_label, 1)
+        predicted_label = label_map[int(predicted_label_idx)]
+
+        results = DeepFace.analyze(img_path=image_path, actions=['race', 'gender'])
+
         print('Raza: ', results[0]['dominant_race'])
         print('Genero: ', results[0]['dominant_gender'])
-        
+
         race = 'normal' if results[0]['dominant_race'] != 'black' else 'black'
         gender = results[0]['dominant_gender']
 
         _, img_encoded = cv2.imencode('.png', image)
         img_base64 = base64.b64encode(img_encoded).decode('utf-8')
-        
+
         results_list = [
             {
-                'face_type' : str(face_type),
-                'race' : str(race),
+                'face_type': str(predicted_label),
+                'race': str(race),
                 'gender': str(gender)
             }
         ]
-        
-        return results_list, True , img_base64
-    
-            
+
+        return results_list, True, img_base64
+
     except ValueError as e:
-        print('Deepface Error')
+        print('DeepFace Error:', e)
         return None, False, None
-    
+
     except Exception as e:
+        print('Error:', e)
         return None, False, None
