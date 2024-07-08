@@ -1,4 +1,3 @@
-import cv2
 import torch
 import base64
 import numpy as np
@@ -7,6 +6,7 @@ from PIL import Image
 from deepface import DeepFace
 import os
 import torch.nn as nn
+import io
 
 # Inicializar MTCNN para la detección de caras
 mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20)
@@ -15,7 +15,7 @@ mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20)
 feature_extractor = InceptionResnetV1(pretrained='vggface2').eval()
 
 # Definir el mismo modelo utilizado para el entrenamiento
-input_dim = 512 # Este valor debe ser consistente con el entrenamiento
+input_dim = 512  # Este valor debe ser consistente con el entrenamiento
 hidden_dim = 100
 output_dim = 5  # Este valor debe coincidir con el número de clases en el entrenamiento
 
@@ -36,36 +36,39 @@ label_map = np.load(label_map_path, allow_pickle=True).item()
 
 def optical_face_features(image_path):
     try:
-        image = cv2.imread(image_path)
-        
-        if image is None:
-            return "La imagen no se ha cargado correctamente", False, None
-        # Convertir la imagen a PIL
-        pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        
+        # Cargar la imagen usando Pillow
+        pil_image = Image.open(image_path)
+
+        # Asegurarse de que la imagen tiene 3 canales (convertir a RGB si tiene 4 canales)
+        if pil_image.mode == 'RGBA':
+            pil_image = pil_image.convert('RGB')
+
         # Detectar las caras en la imagen
         face_locations, _ = mtcnn.detect(pil_image)
 
         if face_locations is None or len(face_locations) == 0:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "No se detectaron rostros en la imagen", False, img_base64
 
         if len(face_locations) != 1:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "Solo debe haber un rostro en la imagen!", True, img_base64
 
         # Procesar el rostro detectado
         face_tensor = mtcnn(pil_image)
-        
+
         if face_tensor is None:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "No se pudo procesar la imagen correctamente", False, img_base64
-        
+
         face_tensor = face_tensor.unsqueeze(0)
-        
+
         with torch.no_grad():
             face_encodings = feature_extractor(face_tensor).numpy()
 
@@ -76,44 +79,50 @@ def optical_face_features(image_path):
         predicted_label = label_map[int(predicted_label_idx)]
 
         # Convertir la imagen a base64 para mostrarla en la interfaz web, etc.
-        _, img_encoded = cv2.imencode('.png', image)
-        img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+        img_byte_arr = io.BytesIO()
+        pil_image.save(img_byte_arr, format='PNG')
+        img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
 
         return str(predicted_label), True, img_base64
 
     except Exception as e:
         print('Error óptico:', e)
         return str(e), False, None
-    
-    
+
 def haircut_face_features(image_path):
     try:
-        image = cv2.imread(image_path)
-        if image is None:
-            return "La imagen no se ha cargado correctamente", False, None
+        # Cargar la imagen usando Pillow
+        pil_image = Image.open(image_path)
 
-        pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        # Asegurarse de que la imagen tiene 3 canales (convertir a RGB si tiene 4 canales)
+        if pil_image.mode == 'RGBA':
+            pil_image = pil_image.convert('RGB')
+
+        # Detectar las caras en la imagen
         face_locations, _ = mtcnn.detect(pil_image)
 
         if face_locations is None or len(face_locations) == 0:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "No se detectaron rostros en la imagen", False, img_base64
 
         if len(face_locations) != 1:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "Solo debe haber un rostro en la imagen!", True, img_base64
 
         face_tensor = mtcnn(pil_image)
 
         if face_tensor is None:
-            _, img_encoded = cv2.imencode('.png', image)
-            img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+            img_byte_arr = io.BytesIO()
+            pil_image.save(img_byte_arr, format='PNG')
+            img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
             return "No se detectaron rostros en la imagen", False, None
 
         face_tensor = face_tensor.unsqueeze(0)
-        
+
         with torch.no_grad():
             face_encodings = feature_extractor(face_tensor).numpy()
 
@@ -125,13 +134,14 @@ def haircut_face_features(image_path):
         results = DeepFace.analyze(img_path=image_path, actions=['race', 'gender'])
 
         print('Raza: ', results[0]['dominant_race'])
-        print('Genero: ', results[0]['dominant_gender'])
+        print('Género: ', results[0]['dominant_gender'])
 
         race = 'normal' if results[0]['dominant_race'] != 'black' else 'black'
         gender = results[0]['dominant_gender']
 
-        _, img_encoded = cv2.imencode('.png', image)
-        img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+        img_byte_arr = io.BytesIO()
+        pil_image.save(img_byte_arr, format='PNG')
+        img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
 
         results_list = [
             {
