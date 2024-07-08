@@ -6,7 +6,12 @@ pkgs.mkShell {
     pkgs.ffmpeg
     pkgs.gtk3
     pkgs.qt5
-    pkgs.libGL
+    pkgs.libgl1
+    pkgs.libgl1-mesa-glx
+    pkgs.libx11
+    pkgs.libxext
+    pkgs.libxrender
+    pkgs.libxcb
     pkgs.gstreamer
     pkgs.gst-plugins-base
     pkgs.gst-plugins-good
@@ -23,4 +28,4 @@ pkgs.mkShell {
     pkgs.cudatoolkit
     pkgs.ipp
   ];
-
+}
