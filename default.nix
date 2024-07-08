@@ -2,15 +2,25 @@
 
 pkgs.mkShell {
   buildInputs = [
-    pkgs.mesa
-    pkgs.libglvnd
-    pkgs.glew
-    pkgs.glfw3
-    pkgs.libGLU
-    pkgs.mesa_drivers
+    pkgs.opencv
+    pkgs.ffmpeg
+    pkgs.gtk3
+    pkgs.qt5
+    pkgs.libGL
+    pkgs.gstreamer
+    pkgs.gst-plugins-base
+    pkgs.gst-plugins-good
+    pkgs.gst-plugins-bad
+    pkgs.gst-plugins-ugly
+    pkgs.gst-libav
+    pkgs.openexr
+    pkgs.zlib
+    pkgs.libpng
+    pkgs.libjpeg
+    pkgs.libtiff
+    pkgs.eigen
+    pkgs.tbb
+    pkgs.cudatoolkit
+    pkgs.ipp
   ];
 
-  shellHook = ''
-    export LIBGL_ALWAYS_SOFTWARE=1
-  '';
-}
