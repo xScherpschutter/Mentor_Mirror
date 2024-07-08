@@ -6,6 +6,7 @@ pkgs.mkShell {
     pkgs.ffmpeg
     pkgs.gtk3
     pkgs.qt5
+    pkgs.python3-opencv
     pkgs.libgl1
     pkgs.libgl1-mesa-glx
     pkgs.libx11
