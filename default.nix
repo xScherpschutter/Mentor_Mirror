@@ -9,7 +9,7 @@ pkgs.mkShell {
     pkgs.libgl1
     pkgs.libgl1-mesa-glx
     pkgs.libx11
-    pkgs.libxext
+    pkgs.libxext6
     pkgs.libxrender
     pkgs.libxcb
     pkgs.gstreamer
