@@ -6,12 +6,12 @@ pkgs.mkShell {
     pkgs.ffmpeg
     pkgs.gtk3
     pkgs.qt5
-    pkgs.python3-opencv
-    pkgs.libgl1
-    pkgs.libgl1-mesa-glx
-    pkgs.libx11
-    pkgs.libxext6
-    pkgs.libxrender
+    pkgs.mesa
+    pkgs.libGL
+    pkgs.libGL1
+    pkgs.libX11
+    pkgs.libXext
+    pkgs.libXrender
     pkgs.libxcb
     pkgs.gstreamer
     pkgs.gst-plugins-base
