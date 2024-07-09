@@ -1,7 +1,5 @@
-[nix]
-enable = false
-
 [docker]
 enabled = true
 
 path = "Dockerfile"
+
